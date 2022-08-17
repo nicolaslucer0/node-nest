@@ -17,7 +17,7 @@ export class PictureService {
   }
 
   findAll() {
-    return `This action returns all picture`;
+    return this.userRepository.find();
   }
 
   findOne(uuid: string) {
