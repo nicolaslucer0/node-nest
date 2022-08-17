@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PictureModule } from './picture/picture.module';
 import { Picture } from './picture/entities/picture.entity';
+import { SubmissionModule } from './submission/submission.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { Picture } from './picture/entities/picture.entity';
     }),
     StoreModule,
     PictureModule,
+    SubmissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
