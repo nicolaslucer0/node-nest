@@ -25,6 +25,11 @@ export class PictureController {
     return this.pictureService.findAll();
   }
 
+  @Get('/cache')
+  findCachedPicture() {
+    return this.pictureService.findCachedPicture();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.pictureService.findOne(id);

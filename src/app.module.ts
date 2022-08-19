@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StoreModule } from './store/store.module';
@@ -7,9 +7,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PictureModule } from './picture/picture.module';
 import { Picture } from './picture/entities/picture.entity';
 import { SubmissionModule } from './submission/submission.module';
+import * as redisStore from 'cache-manager-redis-store';
+import type { ClientOpts } from 'redis';
 
 @Module({
   imports: [
+    CacheModule.register<ClientOpts>({
+      store: redisStore,
+      host: 'localhost',
+      port: 6379,
+    }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePictureDto } from './dto/create-picture.dto';
 import { UpdatePictureDto } from './dto/update-picture.dto';
 import { Picture } from './entities/picture.entity';
-
+import { Cache } from 'cache-manager';
 @Injectable()
 export class PictureService {
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Picture)
     private readonly userRepository: Repository<Picture>,
   ) {}
@@ -20,7 +21,12 @@ export class PictureService {
     return this.userRepository.find();
   }
 
-  findOne(uuid: string) {
+  async findCachedPicture() {
+    return await this.cacheManager.get('picture-uuid');
+  }
+
+  async findOne(uuid: string) {
+    await this.cacheManager.set('picture-uuid', uuid);
     return this.userRepository.findOne({
       where: {
         uuid: uuid,
